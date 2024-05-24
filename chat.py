@@ -184,8 +184,8 @@ def upload_to_blob_storage(file):
 def upload_string_to_blob(container_name, blob_name, data):
     blob_service_client = BlobServiceClient.from_connection_string(storage_connection_string)
     blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)
-    blob_client.upload_blob(data)
-    
+    blob_client.upload_blob(data, overwrite = True)
+
 def download_blob_to_string(container_name, blob_name):
     blob_service_client = BlobServiceClient.from_connection_string(storage_connection_string)
     blob_client = blob_service_client.get_blob_client(container=container_name, blob=blob_name)

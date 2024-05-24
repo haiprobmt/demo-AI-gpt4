@@ -64,7 +64,7 @@ except:
 system_prompt = st.sidebar.text_area(label = "", value = value, height=200)
 save_button = st.sidebar.button('Save')
 if save_button:
-    upload_string_to_blob('test', system_prompt)
+    upload_string_to_blob('test', 'system_prompt.txt', system_prompt)
 
 system_prompt_final = system_prompt
 
