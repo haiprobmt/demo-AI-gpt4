@@ -1,0 +1,12 @@
+openai_api_key = "4657af893faf48e5bd81208d9f87f271"
+AZURE_OPENAI_SERVICE = "cog-kguqugfu5p2ki"
+sa_container_name = 'data-source-2'
+sa_connection_string = "DefaultEndpointsProtocol=https;AccountName=sasanderstrothmann;AccountKey=x4eeHxz6VMBqpmE+eLmA8ECKvA1EzTeUzOH2b9GkLiW7TVeo8DPrx1ckbcMM2QCj+u06a8vkxbI4+AStDI0lAQ==;EndpointSuffix=core.windows.net"
+AZURE_SEARCH_SERVICE = "search-sanderstrothmann"
+AZURE_SEARCH_INDEX = "index-sanderstrothmann"
+SEARCH_API_KEY = "i7F5uuUzXR8KCZ58o4r3aZAr9QG5dDp3erOLgz6kb9AzSeAabEHy"
+AZURE_CLIENT_ID = "c4642a73-05e3-4a68-8228-7d241ba8d6e6"
+AZURE_CLIENT_SECRET = "I_F8Q~MhKD9fCfT9725j9mCad39G6bpwVpolAb.f"
+AZURE_TENANT_ID = "667439c9-20b5-4283-bd7b-fb6b3099d221"
+AZURE_STORAGE_ACCOUNT = "sasanderstrothmann"
+storagekey = "QtoEp5hl3aIWHdkTO1Q8I4R30M5lNnrKsSHjkuAL6BMKvf03Vh6BJfJ5RWEG7hlAGRRu3/pvK+Kx+AStgTMMQQ=="
