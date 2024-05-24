@@ -26,7 +26,7 @@ conversation_final = []
 
 st.set_page_config(page_title="Deeeplabs Demo Chatbot", layout="wide")
 
-st.title('Deeeplabs Demo Chatbot')
+st.title('Sanderstrothmann Chatbot Demo')
 
 col1, col2, col3 = st.columns([1, 1, 1])
 with col3:
