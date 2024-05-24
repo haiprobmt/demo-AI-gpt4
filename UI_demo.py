@@ -3,7 +3,7 @@ from chat import (
     search, send_message_4o, 
     load_conversation, delete_conversation, 
     get_blob_url_with_sas, upload_to_blob_storage, upload_conversation_to_blob,
-    get_json, remove_json)
+    get_json, remove_json, upload_string_to_blob, download_blob_to_string)
 from openai import AzureOpenAI
 import re
 from index_doc import index_document
@@ -56,7 +56,16 @@ st.sidebar.image(logo_url, width=180)
 # Sidebar for system prompt
     # st.sidebar.header("Settings")
 st.sidebar.markdown("<h1 style='text-align: left;'>System prompt</h1>", unsafe_allow_html=True)
-system_prompt = st.sidebar.text_area(label = "", value = """You are a helpful assistant. Only refer provided source. Do not provide any personal opinions or information. Do not provide any medical, legal, financial, or professional advice. Provide the relevant image from the source""" , height=200)
+
+try:
+    value = download_blob_to_string('test', 'system_prompt.txt')
+except:
+    value = ""
+system_prompt = st.sidebar.text_area(label = "", value = value, height=200)
+save_button = st.sidebar.button('Save')
+if save_button:
+    upload_string_to_blob('test', system_prompt)
+
 system_prompt_final = system_prompt
 
 # st.sidebar.markdown("<br>"*4, unsafe_allow_html=True)
