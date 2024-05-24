@@ -65,7 +65,7 @@ system_prompt = st.sidebar.text_area(label = "", value = value, height=200)
 save_button = st.sidebar.button('Save')
 if save_button:
     upload_string_to_blob('test', 'system_prompt.txt', system_prompt)
-    st.sidebar.write('Your prompt has been saved, please refresh the page!')
+    st.sidebar.write('Your prompt has been saved!')
 
 system_prompt_final = system_prompt
 
