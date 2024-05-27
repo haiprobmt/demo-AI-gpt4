@@ -108,7 +108,7 @@ if delete_button:
 st.write(" ")
 st.write(" ")
 
-add_source = """\n\nIf the question is generic then just answer with a friendly tone. Return the outcome in json format following this format: {"response": 'The answer to the question', "images": 'the relevant image urls present in a list, if the question is generic, do not return anything'}."""
+add_source = """\n\nIf the question is generic then just answer with a friendly tone. Return the outcome in json format following this format: {"response": 'The answer to the question', "images": 'the relevant image urls present in a list, if the question is generic, do not return any images'}."""
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
     st.session_state.messages = []
