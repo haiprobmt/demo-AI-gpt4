@@ -9,6 +9,7 @@ import re
 from index_doc import index_document
 import index_doc_pdf
 import credentials as cred  
+import json
 
 AZURE_OPENAI_SERVICE = cred.AZURE_OPENAI_SERVICE
 api_version = "2023-12-01-preview"
@@ -155,12 +156,9 @@ if user_input := st.chat_input():
     conversation.append({"role": "user", "content": query})
     response = send_message_4o(conversation, model)
 
-    try:
-        image_url_list = get_json(response)['Image_url']
-    except:
-        image_url_list = None
-
-    response_final = remove_json(response)
+    response = json.loads(response)
+    image_url_list = list(set(response['images']))
+    response_final = response['response']
 
     conversation[-1]["content"] = user_input
     conversation_final.append({"role": "user", "content": user_input})
