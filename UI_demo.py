@@ -160,7 +160,7 @@ if user_input := st.chat_input():
         image_url_list = list(set(response['images']))
         response_final = response['response']
     except:
-        response_final = response
+        response_final = response['response']
         image_url_list = None
 
     conversation[-1]["content"] = user_input
