@@ -7,6 +7,7 @@ from chat import (
 from openai import AzureOpenAI
 import re
 from index_doc import index_document
+import index_doc_pdf
 import credentials as cred  
 
 AZURE_OPENAI_SERVICE = cred.AZURE_OPENAI_SERVICE
@@ -39,7 +40,7 @@ with col3:
     # """, unsafe_allow_html=True)
     
     # Define the options for the dropdown
-    options = ['GPT 3.5', 'GPT 4']
+    options = ['GPT 3.5', 'GPT 4', 'GPT 4-o']
 
     # Create the dropdown
     selected_option = st.selectbox('Select model', options)
@@ -47,8 +48,10 @@ with col3:
     # Display the selected option
     if selected_option == 'GPT 3.5':
         model = "chat16k"
-    else:
+    elif selected_option == 'GPT 4':
         model = "chat4"
+    else:
+        model = "gpt-4o"
 
 logo_url = get_blob_url_with_sas('dl-logo-hamburger.png', "image")
 st.sidebar.image(logo_url, width=180)
@@ -74,13 +77,15 @@ st.sidebar.markdown("<h1 style='text-align: left;'>Upload File</h1>", unsafe_all
 # Upload file
 uploaded_file  = st.sidebar.file_uploader("Choose an excel file", type=["xlsx"], help="Upload an excel file to provide context")
 # Check if a file was uploaded
-if uploaded_file is not None:
+if uploaded_file:
     # Save the file to Azure Blob Storage
     file_name = uploaded_file.name
-    print(file_name)
     upload_to_blob_storage(uploaded_file)
+    if "xlsx" in file_name:
     # # file_name = uploaded_file.name
-    index_document(file_name)
+        index_document(file_name)
+    else:
+        index_doc_pdf.run(uploaded_file)
     st.sidebar.write('File uploaded successfully!')
 
 # Main layout
@@ -102,11 +107,7 @@ if delete_button:
 st.write(" ")
 st.write(" ")
 
-add_source = "\n\nIf the question is asking about the SOURCE's information, provide the relevant Image_url in the end of the response. \
-    Do not provide the irrelevant Image_url. \
-    The Image_url always have the format .png.\
-    Present the Image_url in a json format. For example: {'Image_url': [picture1_url.png, picture2_url.png']}. Do not return the title, just the json data\
-    If the question is generic then just answer with a friendly tone."""
+add_source = """\n\nIf the question is generic then just answer with a friendly tone. Return the outcome in json format. For example: {"response": 'The answer to the question', "images": 'the relevant image urls present in a list'}."""
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
     st.session_state.messages = []
@@ -147,11 +148,11 @@ if user_input := st.chat_input():
         conversation = [
                 {
                     "role": "system",
-                    "content": system_prompt.replace('   ', '')
+                    "content": system_prompt.replace('   ', '') + add_source
                 }
             ]
     query = search(search_query)
-    conversation.append({"role": "user", "content": query + add_source})
+    conversation.append({"role": "user", "content": query})
     response = send_message_4o(conversation, model)
 
     try:
@@ -181,9 +182,16 @@ for message in st.session_state.messages:
         if message["role"] == "user":
             st.write(message["content"])
         elif message["role"] == "assistant":
-            st.write(message["content"]["response"])
             images = message["content"]["images"]
-            if images is not None:
-                for img_path in images:
-                    # Display the image
-                    st.image(img_path, width=500)
+            col4, col5 = st.columns([3, 1])
+            with col4:
+                st.write(message["content"]["response"])
+            with col5:
+                if images is not None:
+                    for img_path in images:
+                        if "https" in img_path:
+                            img_path_sas = img_path
+                        else:
+                            img_path_sas = get_blob_url_with_sas(img_path, "image")
+                        # Display the image
+                        st.image(img_path_sas, width=500)
