@@ -155,7 +155,7 @@ if user_input := st.chat_input():
     query = search(search_query)
     conversation.append({"role": "user", "content": query})
     response = send_message_4o(conversation, model)
-
+    print(response)
     response = json.loads(response)
     image_url_list = list(set(response['images']))
     response_final = response['response']
