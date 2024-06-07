@@ -41,7 +41,7 @@ with col3:
     # """, unsafe_allow_html=True)
     
     # Define the options for the dropdown
-    options = ['GPT 3.5', 'GPT 4', 'GPT 4-o']
+    options = ['GPT 4-o', 'GPT 4', 'GPT 3.5']
 
     # Create the dropdown
     selected_option = st.selectbox('Select model', options)
@@ -108,7 +108,8 @@ if delete_button:
 st.write(" ")
 st.write(" ")
 
-add_source = """\n\nIf the question is generic then just answer with a friendly tone. Return the outcome in json format following this format: {"response": 'The answer to the question', "images": 'the relevant image urls present in a list, if the question is generic, do not return any images'}."""
+add_source = """\n\nIf the question is generic then just answer with a friendly tone. Return the outcome in json format following this format: {"response": 'The answer to the question', "images": 'the relevant image urls present in a list, if the question is generic, do not return any images'}.\
+            If the question is the follow-up question of the current context, then do not return any images."""
 # Store LLM generated responses
 if "messages" not in st.session_state.keys():
     st.session_state.messages = []
@@ -152,15 +153,21 @@ if user_input := st.chat_input():
                     "content": system_prompt.replace('   ', '') + add_source
                 }
             ]
+    print(search_query)
     query = search(search_query)
     conversation.append({"role": "user", "content": query})
     response = send_message_4o(conversation, model)
+    print(response)
+    if "```json" in response:
+        response_1 = response.split("```json")[1].split("```")[0]
+    else:
+        response_1 = response
     try:
-        response = json.loads(response)
+        response = json.loads(response_1)
         image_url_list = list(set(response['images']))
         response_final = response['response']
     except Exception as e:
-        response_final = response
+        response_final = response['response']
         image_url_list = None
         error_message = str(e)
         print(error_message)

@@ -61,12 +61,12 @@ def search(prompt, filter=None):
                             query_language="en-us", 
                             query_speller="lexicon", 
                             semantic_configuration_name="default", 
-                            top=10,
+                            top=3,
                             vector=query_vector if query_vector else None, 
                             top_k=50 if query_vector else None,
                             vector_fields="embedding" if query_vector else None
                             )
-    results = [doc['image'] + ": " + doc['content'].replace("\n", "").replace("\r", "") for doc in r if doc['image'] != None]
+    results = [doc['content'].replace("\n", "").replace("\r", "") for doc in r]
     content = "\n".join(results)
     user_message = prompt + "\n SOURCES:\n" + content
     return user_message
