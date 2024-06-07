@@ -159,9 +159,11 @@ if user_input := st.chat_input():
         response = json.loads(response)
         image_url_list = list(set(response['images']))
         response_final = response['response']
-    except:
+    except Exception as e:
         response_final = response
         image_url_list = None
+        error_message = str(e)
+        print(error_message)
 
     conversation[-1]["content"] = user_input
     conversation_final.append({"role": "user", "content": user_input})
