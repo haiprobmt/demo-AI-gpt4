@@ -1,5 +1,5 @@
 import streamlit as st
-from chat import (
+from chat_sharepoints import (
     search_demo, send_message_4o, 
     load_conversation, delete_conversation, 
     get_blob_url_with_sas, upload_to_blob_storage, upload_conversation_to_blob, upload_string_to_blob, download_blob_to_string, list_and_stream_files_in_folder, get_object_id, list_folder, list_files)
