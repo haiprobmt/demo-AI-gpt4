@@ -9,3 +9,4 @@ azure-storage-blob==12.14.1
 pypdf2==3.0.1
 tenacity==8.2.2
 pypdf
+office365.sharepoint
